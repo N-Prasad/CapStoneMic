@@ -1,5 +1,7 @@
 package com.prodata.customer_app.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.prodata.customer_app.entity.Customer;
 import com.prodata.customer_app.entity.CustomerAddress;
 import com.prodata.customer_app.exception.CustomerNotFoundException;
+import com.prodata.customer_app.repository.CustomerAddressRepository;
 import com.prodata.customer_app.repository.CustomerRepository;
 
 @Service
@@ -14,6 +17,9 @@ public class CustomerCRUDService {
 
 	@Autowired
 	private CustomerRepository customerRepo;
+	
+	@Autowired
+	private CustomerAddressRepository addressRepo;
 
 	// Customer Crud
 
@@ -23,7 +29,13 @@ public class CustomerCRUDService {
 	 * with @Transactional to maintain data consistency and avoid partial updates.
 	 ****/
 	public Customer addCustomer(Customer customer) {
+//		customer.getCustomerBillingAddressList().forEach(address -> address.setBillingCustomer(customer));
+//		customer.getCustomerShippingAddressList().forEach(address -> address.setShippingCustomer(customer));
 		return customerRepo.save(customer);
+	}
+	
+	public List<Customer> getAllCustomers() {
+		return customerRepo.findAll();
 	}
 
 	public Customer getCustomerById(Long id) {
@@ -50,14 +62,15 @@ public class CustomerCRUDService {
 	@Transactional
 	public Customer addBillingAddress(Long customerId, CustomerAddress address) {
 		Customer customer = getCustomerById(customerId);
-		customer.getCustomerBillingAddress().add(address);
+//		address.setBillingCustomer(customer);
+		customer.getCustomerBillingAddressList().add(address);
 		return customerRepo.save(customer);
 	}
 
 	@Transactional
 	public Customer updateBillingAddress(Long customerId, Long addressId, CustomerAddress updatedAddress) {
 		Customer customer = getCustomerById(customerId);
-		customer.getCustomerBillingAddress().stream().filter(addr -> addr.getAddressId().equals(addressId)).findFirst()
+		customer.getCustomerBillingAddressList().stream().filter(addr -> addr.getAddressId().equals(addressId)).findFirst()
 				.ifPresent(oldAddr -> {
 					oldAddr.setDoorNo(updatedAddress.getDoorNo());
 					oldAddr.setStreetName(updatedAddress.getStreetName());
@@ -71,7 +84,7 @@ public class CustomerCRUDService {
 	@Transactional
 	public Customer deleteBillingAddress(Long customerId, Long addressId) {
 		Customer customer = getCustomerById(customerId);
-		customer.getCustomerBillingAddress().removeIf(addr -> addr.getAddressId().equals(addressId));
+		customer.getCustomerBillingAddressList().removeIf(addr -> addr.getAddressId().equals(addressId));
 		return customerRepo.save(customer);
 	}
 
@@ -80,14 +93,15 @@ public class CustomerCRUDService {
 	@Transactional
 	public Customer addShippingAddress(Long customerId, CustomerAddress address) {
 		Customer customer = getCustomerById(customerId);
-		customer.getCustomerShippingAddress().add(address);
+//		address.setShippingCustomer(customer);
+		customer.getCustomerShippingAddressList().add(address);
 		return customerRepo.save(customer);
 	}
 
 	@Transactional
 	public Customer updateShippingAddress(Long customerId, Long addressId, CustomerAddress updatedAddress) {
 		Customer customer = getCustomerById(customerId);
-		customer.getCustomerShippingAddress().stream().filter(addr -> addr.getAddressId().equals(addressId)).findFirst()
+		customer.getCustomerShippingAddressList().stream().filter(addr -> addr.getAddressId().equals(addressId)).findFirst()
 				.ifPresent(oldAddr -> {
 					oldAddr.setDoorNo(updatedAddress.getDoorNo());
 					oldAddr.setStreetName(updatedAddress.getStreetName());
@@ -101,7 +115,7 @@ public class CustomerCRUDService {
 	@Transactional
 	public Customer deleteShippingAddress(Long customerId, Long addressId) {
 		Customer customer = getCustomerById(customerId);
-		customer.getCustomerShippingAddress().removeIf(addr -> addr.getAddressId().equals(addressId));
+		customer.getCustomerShippingAddressList().removeIf(addr -> addr.getAddressId().equals(addressId));
 		return customerRepo.save(customer);
 	}
 

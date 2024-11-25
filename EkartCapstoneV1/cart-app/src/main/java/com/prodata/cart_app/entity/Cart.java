@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table
@@ -22,12 +21,20 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cartId;
 
+	private Long customerId;
+
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "cart_Id")
+	@JoinColumn(name = "cartId")
 	private List<LineItem> lineItems = new ArrayList<>();
 
 	public Cart() {
-		
+
+	}
+
+	public Cart(Long customerId, List<LineItem> lineItems) {
+		super();
+		this.customerId = customerId;
+		this.lineItems = lineItems;
 	}
 
 	public Cart(List<LineItem> lineItems) {
@@ -65,6 +72,14 @@ public class Cart {
 
 	public void setLineItems(List<LineItem> lineItems) {
 		this.lineItems = lineItems;
+	}
+
+	public Long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
 	}
 
 }

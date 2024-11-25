@@ -1,7 +1,10 @@
 package com.prodata.customer_app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +30,23 @@ public class CustomerCRUDController {
 
 	// Customer Crud operation
 
+//	@PostMapping(value="/add",
+//		    consumes = {"application/json", "application/json;charset=UTF-8"})
 	@PostMapping("/add")
 	public ResponseEntity<Customer> addCustomer(@Valid @RequestBody Customer customer) {
+		System.out.println("Received customer: " + customer);
 		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.addCustomer(customer));
 	}
-
+	
+	@GetMapping("/all")
+	public ResponseEntity<List<Customer>> getAllCustomers() {
+		List<Customer> list = customerService.getAllCustomers();
+		if (list.isEmpty()) {
+			return ResponseEntity.noContent().build();// 204 No Content
+		}
+		return ResponseEntity.ok(list);
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Customer> getCustomerById(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(customerService.getCustomerById(id));
@@ -71,7 +86,7 @@ public class CustomerCRUDController {
 
 	@PostMapping("/{customerId}/shipping-addresses")
 	public ResponseEntity<Customer> addShippingAddress(@PathVariable Long customerId,
-			@RequestBody CustomerAddress address) {
+			@Valid @RequestBody CustomerAddress address) {
 		return ResponseEntity.ok(customerService.addShippingAddress(customerId, address));
 	}
 

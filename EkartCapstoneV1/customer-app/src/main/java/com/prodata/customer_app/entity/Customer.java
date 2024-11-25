@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,7 +17,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "Customer")
@@ -31,15 +33,15 @@ public class Customer {
 	@NotBlank(message = "Email cannot be blank")
 	private String customerEmail;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "customer_billing_id")// uni directional mapping
-//	@NotEmpty(message = "Billing address should not be empty")
-	private List<CustomerAddress> customerBillingAddress = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //, mappedBy = "billingCustomer")
+//	@JsonManagedReference
+	@JoinColumn(name = "customerId")
+	private List<CustomerAddress> customerBillingAddressList = new ArrayList<>();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "customer_shipping_id")
-//	@NotEmpty(message = "shipping address should not be empty")
-	private List<CustomerAddress> customerShippingAddress = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //, mappedBy = "shippingCustomer")
+//	@JsonManagedReference
+	@JoinColumn(name = "customerId")
+	private List<CustomerAddress> customerShippingAddressList = new ArrayList<>();
 
 	public Customer() {
 
@@ -54,19 +56,20 @@ public class Customer {
 	public Customer(@NotBlank(message = "Customer name cannot be blank") String customerName,
 			@Email(message = "Invalid email format") @NotBlank(message = "Email cannot be blank") String customerEmail,
 //			@NotEmpty(message = "Billing address should not be empty") 
-	List<CustomerAddress> customerBillingAddress,
+			List<CustomerAddress> customerBillingAddressList,
 //			@NotEmpty(message = "shipping address should not be empty") 
-	List<CustomerAddress> customerShippingAddress) {
+			List<CustomerAddress> customerShippingAddressList) {
 		this.customerName = customerName;
 		this.customerEmail = customerEmail;
-		this.customerBillingAddress = customerBillingAddress;
-		this.customerShippingAddress = customerShippingAddress;
+		this.customerBillingAddressList = customerBillingAddressList;
+		this.customerShippingAddressList = customerShippingAddressList;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Customer [customerId=" + Objects.toString(customerId, "null") + ", customerName=" + Objects.toString(customerName, "null") + ", customerEmail="
-				+ Objects.toString(customerEmail, "null") + "]";
+		return "Customer [customerId=" + Objects.toString(customerId, "null") + ", customerName="
+				+ Objects.toString(customerName, "null") + ", customerEmail=" + Objects.toString(customerEmail, "null")
+				+ "]";
 	}
 
 	public long getCustomerId() {
@@ -93,20 +96,20 @@ public class Customer {
 		this.customerEmail = customerEmail;
 	}
 
-	public List<CustomerAddress> getCustomerBillingAddress() {
-		return customerBillingAddress;
+	public List<CustomerAddress> getCustomerBillingAddressList() {
+		return customerBillingAddressList;
 	}
 
-	public void setCustomerBillingAddress(List<CustomerAddress> customerBillingAddress) {
-		this.customerBillingAddress = customerBillingAddress;
+	public void setCustomerBillingAddressList(List<CustomerAddress> customerBillingAddressList) {
+		this.customerBillingAddressList = customerBillingAddressList;
 	}
 
-	public List<CustomerAddress> getCustomerShippingAddress() {
-		return customerShippingAddress;
+	public List<CustomerAddress> getCustomerShippingAddressList() {
+		return customerShippingAddressList;
 	}
 
-	public void setCustomerShippingAddress(List<CustomerAddress> customerShippingAddress) {
-		this.customerShippingAddress = customerShippingAddress;
+	public void setCustomerShippingAddressList(List<CustomerAddress> customerShippingAddressList) {
+		this.customerShippingAddressList = customerShippingAddressList;
 	}
 
 }

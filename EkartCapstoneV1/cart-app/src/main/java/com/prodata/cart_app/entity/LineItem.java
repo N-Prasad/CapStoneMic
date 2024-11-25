@@ -31,6 +31,10 @@ public class LineItem {
 	@NotNull
 	@Positive
 	private Double price;
+	
+	public LineItem() {
+		
+	}
 
 	public LineItem(Long productId, String productName, @NotNull @Positive Integer quantity,
 			@NotNull @Positive Double price) {

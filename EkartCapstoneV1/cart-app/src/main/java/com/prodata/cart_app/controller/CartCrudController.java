@@ -38,13 +38,13 @@ public class CartCrudController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdCart);
 	}
 
-	@PutMapping("path/{id}")
+	@PutMapping("path/{cartId}")
 	public ResponseEntity<Cart> updateCart(@PathVariable Long cartId, @Valid @RequestBody Cart updatedCart) {
 		Cart cart = cartService.updateCart(cartId, updatedCart);
 		return ResponseEntity.ok(cart);
 	}
 
-	@DeleteMapping("/{cartId}")
+	@DeleteMapping("/{cartId}")// delete only if customer account deleted
 	public ResponseEntity<Void> deleteCart(@PathVariable Long cartId) {
 		cartService.deleteCart(cartId);
 		return ResponseEntity.noContent().build();

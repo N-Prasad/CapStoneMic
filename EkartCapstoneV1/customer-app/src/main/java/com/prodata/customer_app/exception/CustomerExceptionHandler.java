@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -54,7 +55,7 @@ public class CustomerExceptionHandler extends ResponseEntityExceptionHandler {
 
 	// Handle validation errors for invalid @RequestBody or @RequestParam
 	@Override
-	@ExceptionHandler(MethodArgumentNotValidException.class) // 400 Bad Request handle validation error for invalid
+//	@ExceptionHandler(MethodArgumentNotValidException.class) // 400 Bad Request handle validation error for invalid
 																// @RequestBody from @Valid
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -68,7 +69,7 @@ public class CustomerExceptionHandler extends ResponseEntityExceptionHandler {
 
 	// Handle missing parameters like addressId or customerId
 	@Override
-	@ExceptionHandler(MissingServletRequestParameterException.class)
+	//@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -79,7 +80,7 @@ public class CustomerExceptionHandler extends ResponseEntityExceptionHandler {
 
 	// Handle Http Request method not support
 	@Override
-	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	//@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -88,5 +89,11 @@ public class CustomerExceptionHandler extends ResponseEntityExceptionHandler {
 		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), message, request.getDescription(false));
 		return new ResponseEntity<>(errorDetails, HttpStatus.METHOD_NOT_ALLOWED);
 	}
+	
+//	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+//    public ResponseEntity<String> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException ex) {
+//        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+//                .body("Invalid Content-Type: " + ex.getContentType());
+//    }
 
 }

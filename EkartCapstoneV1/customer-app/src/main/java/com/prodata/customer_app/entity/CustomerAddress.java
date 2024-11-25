@@ -2,10 +2,14 @@ package com.prodata.customer_app.entity;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -35,6 +39,16 @@ public class CustomerAddress {
 //	@Digits(integer = 6, fraction = 0, message = "Pincode must contain 6 digits")
 	@Size(min = 5, max = 6, message = "Pincode must be 5 or 6 digits")
 	private String pincode;
+
+//	@ManyToOne
+//	@JoinColumn(name = "billing_customer_id", nullable = true)
+//	@JsonBackReference
+//	private Customer billingCustomer;
+//
+//	@ManyToOne
+//	@JoinColumn(name = "shipping_customer_id", nullable = true)
+//	@JsonBackReference
+//	private Customer shippingCustomer;
 
 	public CustomerAddress() {
 	}
@@ -125,5 +139,21 @@ public class CustomerAddress {
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
 	}
+
+//	public Customer getBillingCustomer() {
+//		return billingCustomer;
+//	}
+//
+//	public void setBillingCustomer(Customer billingCustomer) {
+//		this.billingCustomer = billingCustomer;
+//	}
+//
+//	public Customer getShippingCustomer() {
+//		return shippingCustomer;
+//	}
+//
+//	public void setShippingCustomer(Customer shippingCustomer) {
+//		this.shippingCustomer = shippingCustomer;
+//	}
 
 }

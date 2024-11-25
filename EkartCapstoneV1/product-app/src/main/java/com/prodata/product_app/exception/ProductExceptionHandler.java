@@ -47,8 +47,8 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
 		
 	}
 
-	@Override
-	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	@Override //For Overridden method @ExceptionHandler cause issue so commented below line
+	//@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED) // 405
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {

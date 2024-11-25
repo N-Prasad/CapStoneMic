@@ -1,0 +1,58 @@
+
+
+--------------------------ADMIN---------------------
+
+spring.application.name=ekart-admin
+server.port=8765
+
+#To exclude certain micro service from monitoring or managed by admin server
+#spring.boot.admin.discovery.ignored-services=gateway-service
+
+#to include certain service list separated with comma
+#spring.boot.admin.discovery.services=
+
+#--------------------------------
+## Connecting to Discovery Server - Client side properties config for reference
+eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka
+## default true for below properties
+eureka.client.register-with-eureka=true
+eureka.client.fetch-registry=true
+#To fetch available eureka service
+eureka.client.registry-fetch-interval-seconds=5
+#-----------------------------------------------
+
+
+
+
+##############################Closed#############################################
+
+----------------------Eureka Discovery server ------------------------------
+spring.application.name=discovery-server-app
+#default port number for eureka server is 8761
+server.port=8761
+
+#Eureka Server configurations
+# below properties are with default value is true so it is must to set as false in discovery server side
+eureka.client.register-with-eureka=false 
+eureka.client.fetch-registry=false
+#--------------------------------
+## Connecting to Discovery Server - Client side properties config for reference
+# eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka
+## default true for below properties
+#eureka.client.register-with-eureka=true
+#eureka.client.fetch-registry=true
+#-----------------------------------------------
+
+#Connecting to config Server
+spring.cloud.config.enabled=false
+#spring.cloud.config.import-check.enabled=false.
+#optional makes start app currently
+spring.config.import=optional:configserver:http://localhost:8888
+#spring.config.import=configserver:http://localhost:8888
+
+#----------------------------------------
+
+
+##############################Closed#############################################
+
+
